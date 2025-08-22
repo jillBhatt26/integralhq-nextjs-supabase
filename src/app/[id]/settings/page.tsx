@@ -1,8 +1,8 @@
 import { notFound, redirect, RedirectType } from 'next/navigation';
+import PostForm from '@/components/PostForm';
 import { createClient } from '@/utils/supabase/server';
-import Link from 'next/link';
 
-const PostDetailsPage = async ({
+const PostSettingsPage = async ({
     params
 }: {
     params: Promise<{ id: string }>;
@@ -40,21 +40,14 @@ const PostDetailsPage = async ({
                     </div>
                 )}
 
-                {status === 200 && data && !error && <p>{data[0].content}</p>}
-
-                {data && data[0].author_id === user.id && (
-                    <div className="flex justify-center">
-                        <Link
-                            href={`${data[0].id}/settings`}
-                            className="btn btn-primary btn-md w-full md:max-w-60 mt-5"
-                        >
-                            Edit Post
-                        </Link>
-                    </div>
+                {status === 200 && data && !error && (
+                    <>
+                        <PostForm purpose="update" toUpdatePost={data[0]} />
+                    </>
                 )}
             </div>
         </div>
     );
 };
 
-export default PostDetailsPage;
+export default PostSettingsPage;

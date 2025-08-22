@@ -13,7 +13,10 @@ const Posts = () => {
     const fetchPostsCB = useCallback(async () => {
         const supabase = createClient();
 
-        const res = await supabase.from('posts').select();
+        const res = await supabase
+            .from('posts')
+            .select()
+            .order('created_at', { ascending: false });
 
         const { data, error, status } = res;
 
