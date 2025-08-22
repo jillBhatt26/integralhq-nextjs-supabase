@@ -5,6 +5,7 @@ import { FaThumbsUp } from 'react-icons/fa6';
 import { FaThumbsDown } from 'react-icons/fa';
 import { PostsServices } from '@/services/posts';
 import { redirect, RedirectType } from 'next/navigation';
+import Loader from './Loader';
 
 const LikeOrUnlikeButton: FC<{ hasLiked: boolean; postID: string }> = ({
     hasLiked,
@@ -12,6 +13,7 @@ const LikeOrUnlikeButton: FC<{ hasLiked: boolean; postID: string }> = ({
 }) => {
     // states
     const [newLikeStatus, setNewLikeStatus] = useState<boolean>(hasLiked);
+    const [loading, setLoading] = useState<boolean>(false);
 
     // effects
     useEffect(() => {
@@ -20,12 +22,15 @@ const LikeOrUnlikeButton: FC<{ hasLiked: boolean; postID: string }> = ({
 
     // event handlers
     const handlePostLikeOrUnlike = async () => {
+        setLoading(true);
+
         if (newLikeStatus) {
             // unlike
             const res = await PostsServices.UnlikePost(postID);
 
             if (res.status === 204) {
                 setNewLikeStatus(false);
+                setLoading(false);
                 return redirect(`/${postID}`, RedirectType.push);
             }
         } else {
@@ -35,6 +40,7 @@ const LikeOrUnlikeButton: FC<{ hasLiked: boolean; postID: string }> = ({
 
             if (res.data && res.data.length === 1) {
                 setNewLikeStatus(true);
+                setLoading(false);
                 return redirect(`/${postID}`, RedirectType.push);
             }
         }
@@ -47,13 +53,20 @@ const LikeOrUnlikeButton: FC<{ hasLiked: boolean; postID: string }> = ({
                 newLikeStatus ? 'btn-error' : 'btn-info'
             } text-white w-full md:max-w-60 space-x-2`}
             onClick={handlePostLikeOrUnlike}
+            disabled={loading}
         >
-            {newLikeStatus ? (
-                <FaThumbsDown className="text-2xl" />
+            {loading ? (
+                <Loader />
             ) : (
-                <FaThumbsUp className="text-2xl" />
+                <>
+                    {newLikeStatus ? (
+                        <FaThumbsDown className="text-2xl" />
+                    ) : (
+                        <FaThumbsUp className="text-2xl" />
+                    )}
+                    <span>{newLikeStatus ? 'Unlike' : 'Like'}</span>
+                </>
             )}
-            <span>{newLikeStatus ? 'Unlike' : 'Like'}</span>
         </button>
     );
 };

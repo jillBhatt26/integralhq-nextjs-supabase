@@ -10,6 +10,7 @@ import { PostsServices } from '@/services/posts';
 import useAuthStore from '@/store/auth';
 import { autogenerate } from '@/utils/functions/autogenerate';
 import DeletePostButton from './DeletePostButton';
+import Loader from './Loader';
 
 const PostForm: FC<{ purpose: 'create' | 'update'; toUpdatePost?: TPost }> = ({
     purpose,
@@ -18,6 +19,7 @@ const PostForm: FC<{ purpose: 'create' | 'update'; toUpdatePost?: TPost }> = ({
     // states
     const [inputContent, setInputContent] = useState<string>('');
     const [error, setError] = useState<string | null>(null);
+    const [loading, setLoading] = useState<boolean>(false);
 
     const authUser = useAuthStore(state => state.user);
 
@@ -34,6 +36,7 @@ const PostForm: FC<{ purpose: 'create' | 'update'; toUpdatePost?: TPost }> = ({
     ) => {
         event.preventDefault();
         setError(null);
+        setLoading(true);
 
         if (!authUser) return;
 
@@ -59,6 +62,8 @@ const PostForm: FC<{ purpose: 'create' | 'update'; toUpdatePost?: TPost }> = ({
                     );
 
                 return setError('Failed to create new post!');
+            } finally {
+                setLoading(false);
             }
 
             if (createRes) {
@@ -98,6 +103,8 @@ const PostForm: FC<{ purpose: 'create' | 'update'; toUpdatePost?: TPost }> = ({
                     );
 
                 return setError('Failed to update post!');
+            } finally {
+                setLoading(false);
             }
 
             if (updateRes) {
@@ -145,6 +152,7 @@ const PostForm: FC<{ purpose: 'create' | 'update'; toUpdatePost?: TPost }> = ({
                         type="button"
                         className="btn text-white btn-md w-full md:max-w-60"
                         onClick={() => setInputContent(autogenerate())}
+                        disabled={loading}
                     >
                         Autogenerate
                     </button>
@@ -152,8 +160,13 @@ const PostForm: FC<{ purpose: 'create' | 'update'; toUpdatePost?: TPost }> = ({
                     <button
                         type="submit"
                         className="btn btn-primary btn-md w-full md:max-w-60"
+                        disabled={loading}
                     >
-                        {purpose.toUpperCase()}
+                        {loading ? (
+                            <Loader />
+                        ) : (
+                            <span>{purpose.toUpperCase()}</span>
+                        )}
                     </button>
 
                     {toUpdatePost && (

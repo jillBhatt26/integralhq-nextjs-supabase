@@ -10,12 +10,14 @@ import { ZodError } from 'zod';
 import { AuthServices } from '@/services/auth';
 import useAuthStore from '@/store/auth';
 import { loginUserSchema } from '@/lib/validations/auth';
+import Loader from '../loading';
 
 const LoginPage = () => {
     // states
     const [inputEmail, setInputEmail] = useState<string>('');
     const [inputPassword, setInputPassword] = useState<string>('');
     const [loginError, setLoginError] = useState<string | null>(null);
+    const [loading, setLoading] = useState<boolean>(false);
 
     const setUser = useAuthStore(state => state.setUser);
 
@@ -25,6 +27,7 @@ const LoginPage = () => {
     ) => {
         event.preventDefault();
         setLoginError(null);
+        setLoading(true);
 
         let loginUserRes: AuthTokenResponsePassword | null = null;
 
@@ -49,6 +52,8 @@ const LoginPage = () => {
                 );
 
             return setLoginError('Failed to login user!');
+        } finally {
+            setLoading(false);
         }
 
         if (loginUserRes) {
@@ -126,8 +131,12 @@ const LoginPage = () => {
                     <span>Password</span>
                 </label>
 
-                <button type="submit" className="btn-primary btn btn-block">
-                    Login
+                <button
+                    type="submit"
+                    className="btn-primary btn btn-block"
+                    disabled={loading}
+                >
+                    {loading ? <Loader /> : <span>Login</span>}
                 </button>
             </form>
 

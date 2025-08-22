@@ -7,6 +7,7 @@ import { AuthServices } from '@/services/auth';
 import useAuthStore from '@/store/auth';
 import { ZodError } from 'zod';
 import { signupUserSchema } from '@/lib/validations/auth';
+import Loader from '../loading';
 
 const SignupPage = () => {
     // states
@@ -16,6 +17,7 @@ const SignupPage = () => {
     const [inputConfirmPassword, setInputConfirmPassword] =
         useState<string>('');
     const [signupError, setSignupError] = useState<string | null>(null);
+    const [loading, setLoading] = useState<boolean>(false);
 
     // hooks
     const setUser = useAuthStore(state => state.setUser);
@@ -27,6 +29,7 @@ const SignupPage = () => {
         event.preventDefault();
 
         setSignupError(null);
+        setLoading(true);
 
         let signupUserRes: AuthResponse | null = null;
 
@@ -50,6 +53,8 @@ const SignupPage = () => {
                 );
 
             return setSignupError('Failed to signup user!');
+        } finally {
+            setLoading(false);
         }
 
         if (signupUserRes) {
@@ -151,8 +156,12 @@ const SignupPage = () => {
                     <span>Confirm Password</span>
                 </label>
 
-                <button type="submit" className="btn-primary btn btn-block">
-                    Sign Up
+                <button
+                    type="submit"
+                    className="btn-primary btn btn-block"
+                    disabled={loading}
+                >
+                    {loading ? <Loader /> : <span>Sign Up</span>}
                 </button>
             </form>
 
