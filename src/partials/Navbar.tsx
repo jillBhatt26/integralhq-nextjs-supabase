@@ -48,7 +48,7 @@ const Navbar = () => {
                     href={user ? '/' : '/login'}
                     className="btn btn-ghost text-xl"
                 >
-                    NS Todos
+                    MicroFeed
                 </Link>
 
                 {user && (
