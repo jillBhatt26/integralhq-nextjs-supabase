@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { createClient } from '@/utils/supabase/server';
 import { redirect, RedirectType } from 'next/navigation';
+import Posts from '@/components/Posts';
 
 const HomePage = async () => {
     const supabase = await createClient();
@@ -21,6 +22,8 @@ const HomePage = async () => {
             >
                 Create new post
             </Link>
+
+            <Posts />
         </div>
     );
 };
