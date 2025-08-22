@@ -131,13 +131,13 @@ const PostForm: FC<{ purpose: 'create' | 'update'; toUpdatePost?: TPost }> = ({
 
                 <label className="floating-label my-5">
                     <span>Post content</span>
-                    <input
-                        type="text"
+                    <textarea
+                        className="textarea w-full"
                         placeholder="Post content"
-                        className="w-full input input-md"
+                        rows={3}
                         value={inputContent}
                         onChange={e => setInputContent(e.target.value)}
-                    />
+                    ></textarea>
                 </label>
 
                 <div className="space-y-5 md:space-y-0 md:space-x-5">

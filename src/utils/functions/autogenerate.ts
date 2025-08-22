@@ -1,7 +1,7 @@
 import { dummy } from '@/constants/strings';
 
 const autogenerate = (): string => {
-    return new Array(Math.floor(1 + Math.random() * 10))
+    return new Array(Math.floor(1 + Math.random() * 40))
         .fill(() => '')
         .map(
             () =>

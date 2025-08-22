@@ -22,8 +22,7 @@ const PostDetailsPage = async ({
     const { status, data, error } = await supabase
         .from('posts')
         .select()
-        .eq('id', postID)
-        .eq('author_id', user!.id);
+        .eq('id', postID);
 
     if (data && data.length === 0) {
         return notFound();
