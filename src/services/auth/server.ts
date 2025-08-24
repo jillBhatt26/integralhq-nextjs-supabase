@@ -1,7 +1,7 @@
 'use server';
 
 import { API_URL } from '@/constants/env';
-import { AuthTokenResponsePassword, UserResponse } from '@supabase/supabase-js';
+import { UserResponse } from '@supabase/supabase-js';
 import { cookies } from 'next/headers';
 
 class AuthServerServices {

@@ -1,5 +1,3 @@
-// 'use client';
-
 import { API_URL } from '@/constants/env';
 import {
     AuthError,
