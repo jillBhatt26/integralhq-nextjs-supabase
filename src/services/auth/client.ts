@@ -1,23 +1,14 @@
+// 'use client';
+
 import { API_URL } from '@/constants/env';
 import {
     AuthError,
     AuthResponse,
-    AuthTokenResponsePassword,
-    User
+    AuthTokenResponsePassword
 } from '@supabase/supabase-js';
 
-class AuthServices {
+class AuthClientServices {
     static BASE_URL: string = `${API_URL}/auth`;
-
-    static check = async (): Promise<User | null> => {
-        try {
-            const res = await fetch(this.BASE_URL);
-
-            return await res.json();
-        } catch (error: unknown) {
-            throw error;
-        }
-    };
 
     static login = async (body: {
         email: string;
@@ -74,4 +65,4 @@ class AuthServices {
     };
 }
 
-export { AuthServices };
+export { AuthClientServices };

@@ -7,7 +7,7 @@ import {
     isAuthApiError
 } from '@supabase/supabase-js';
 import { ZodError } from 'zod';
-import { AuthServices } from '@/services/auth';
+import { AuthClientServices } from '@/services/auth/client';
 import useAuthStore from '@/store/auth';
 import { loginUserSchema } from '@/lib/validations/auth';
 import Loader from '../loading';
@@ -37,7 +37,7 @@ const LoginPage = () => {
                 password: inputPassword
             });
 
-            const res = await AuthServices.login({
+            const res = await AuthClientServices.login({
                 email: validatedLoginBody.email,
                 password: validatedLoginBody.password
             });

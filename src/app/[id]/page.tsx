@@ -3,6 +3,7 @@ import { createClient } from '@/utils/supabase/server';
 import Link from 'next/link';
 import { FaThumbsUp } from 'react-icons/fa6';
 import LikeOrUnlikeButton from '@/components/LikeOrUnlikeButton';
+import { AuthServerServices } from '@/services/auth/server';
 
 const PostDetailsPage = async ({
     params
@@ -16,7 +17,7 @@ const PostDetailsPage = async ({
     const {
         data: { user },
         error: authUserError
-    } = await supabase.auth.getUser();
+    } = await AuthServerServices.check();
 
     // NOTE: This step is just to remove TypeScript null check. User auth check is already handled in middleware.
     if (!user || authUserError) return redirect('/login', RedirectType.replace);

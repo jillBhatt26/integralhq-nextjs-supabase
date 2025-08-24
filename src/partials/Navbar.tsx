@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { notFound, redirect, RedirectType } from 'next/navigation';
 import { createClient } from '@/utils/supabase/client';
 import useAuthStore from '@/store/auth';
+import { AuthClientServices } from '@/services/auth/client';
 
 const Navbar = () => {
     // hooks
@@ -30,9 +31,7 @@ const Navbar = () => {
 
     // event handlers
     const handleUserLogout: MouseEventHandler<HTMLButtonElement> = async () => {
-        const supabase = createClient();
-
-        const { error } = await supabase.auth.signOut();
+        const { error } = await AuthClientServices.logout();
 
         if (error) return notFound();
 

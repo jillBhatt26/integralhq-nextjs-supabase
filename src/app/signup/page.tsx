@@ -3,7 +3,7 @@ import { FormEvent, FormEventHandler, useState } from 'react';
 import Link from 'next/link';
 import { redirect, RedirectType } from 'next/navigation';
 import { AuthResponse, isAuthApiError } from '@supabase/supabase-js';
-import { AuthServices } from '@/services/auth';
+import { AuthClientServices } from '@/services/auth/client';
 import useAuthStore from '@/store/auth';
 import { ZodError } from 'zod';
 import { signupUserSchema } from '@/lib/validations/auth';
@@ -41,7 +41,7 @@ const SignupPage = () => {
                 confirmPassword: inputConfirmPassword
             });
 
-            const res = await AuthServices.signup(validatedSignupInputs);
+            const res = await AuthClientServices.signup(validatedSignupInputs);
 
             if (typeof res === 'string') return setSignupError(res);
 

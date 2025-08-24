@@ -1,6 +1,7 @@
 import { notFound, redirect, RedirectType } from 'next/navigation';
 import PostForm from '@/components/PostForm';
 import { createClient } from '@/utils/supabase/server';
+import { AuthServerServices } from '@/services/auth/server';
 
 const PostSettingsPage = async ({
     params
@@ -14,7 +15,7 @@ const PostSettingsPage = async ({
     const {
         data: { user },
         error: authUserError
-    } = await supabase.auth.getUser();
+    } = await AuthServerServices.check();
 
     // NOTE: This step is just to remove TypeScript null check. User auth check is already handled in middleware.
     if (!user || authUserError) return redirect('/login', RedirectType.replace);

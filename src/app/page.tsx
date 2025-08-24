@@ -1,19 +1,7 @@
 import Link from 'next/link';
-import { createClient } from '@/utils/supabase/server';
-import { redirect, RedirectType } from 'next/navigation';
 import Posts from '@/components/Posts';
 
 const HomePage = async () => {
-    const supabase = await createClient();
-
-    const {
-        data: { user },
-        error: authUserError
-    } = await supabase.auth.getUser();
-
-    // NOTE: This step is just to remove TypeScript null check. User auth check is already handled in middleware.
-    if (!user || authUserError) return redirect('/login', RedirectType.replace);
-
     return (
         <div className="container mx-auto">
             <Link
